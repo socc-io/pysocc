@@ -1,4 +1,5 @@
 flask
 flask_login
 flask_admin
+flask_sqlalchemy
 SQLAlchemy
