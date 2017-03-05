@@ -43,18 +43,18 @@ def logout() :
 		logout_user()
 	return jsonify({'success':1})
 
-@userCnt.route('/signup', methods=['POST'])
-def signup() :
-	err, data = data_get(('email', 'password'))
-	if err == False :
-			if data == None :
-				return jsonify({'success':0, 'msg':'invalid request format'}) # Fail to parse request data
-			else :
-				return jsonify({'success':0, 'msg':'{0} not found'.format(data)}) # Couldn't find required data
-	user, msg = userService.signup(**data)
-	if not user :
-		return jsonify({'success':0, 'msg':msg})
-	return jsonify({'success':1, 'user':user.dict()})
+# @userCnt.route('/signup', methods=['POST'])
+# def signup() :
+# 	err, data = data_get(('email', 'password'))
+# 	if err == False :
+# 			if data == None :
+# 				return jsonify({'success':0, 'msg':'invalid request format'}) # Fail to parse request data
+# 			else :
+# 				return jsonify({'success':0, 'msg':'{0} not found'.format(data)}) # Couldn't find required data
+# 	user, msg = userService.signup(**data)
+# 	if not user :
+# 		return jsonify({'success':0, 'msg':msg})
+# 	return jsonify({'success':1, 'user':user.dict()})
 
 @userCnt.route('/join_study/<int:studyNo>', methods=['POST'])
 def postJoinStudy(studyNo) :
