@@ -5,7 +5,8 @@ import datetime
 
 class User(db.Model) :
 	__tablename__ = 'user'
-	apikey = db.Column(db.String(64), primary_key=True)
+	id = db.Column(db.Integer, primary_key=True)
+        apikey = db.Column(db.String(64))
 	email = db.Column(db.String(256))
 	password = db.Column(db.String(256))
 	role = db.Column(db.String(32))

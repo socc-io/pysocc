@@ -25,4 +25,3 @@ def signup(email, password, **kwargs) :
 
 def updateLastDate(user, **kwargs) :
 	user.last_date = datetime.datetime.now()
-	db.session.commit()

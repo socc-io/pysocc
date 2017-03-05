@@ -1,5 +1,6 @@
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/socc.db'
+SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 DEBUG = True
 TESTING = False

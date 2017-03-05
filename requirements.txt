@@ -3,3 +3,4 @@ flask_login
 flask_admin
 flask_sqlalchemy
 SQLAlchemy
+sqlalchemy_utils
