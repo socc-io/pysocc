@@ -22,7 +22,8 @@ def getStudy(id) :
         study = studyService.get(id)
         if not study: raise Exception()
         return jsonify({'success':1, 'study':study.dict(join=True)})
-    except :
+    except Exception as e:
+        print e
         return jsonify({'success':0, 'msg':'failed to get study by id: {}'.format(id)})
 
 @studyCnt.route('/study/<int:id>', methods=['PUT'])
@@ -30,14 +31,80 @@ def putStudy(id) :
     try :
         study = studyService.get(id)
         if not study: raise Exception('failed to find study by id: {}'.format(id))
-    except :
+        bodyJson = request.get_json()
+        for key in bodyJson.keys() :
+            if hasattr(study,key) : setattr(study,key,bodyJson[key])
+        return jsonify({'success':1})
+    except Exception as e:
+        print e
         return jsonify({'success':0}) 
 
 @studyCnt.route('/study/<int:id>', methods=['DELETE'])
 def deleteStudy(id) :
     try :
-        if studyService.delete(id) :
-            return jsonify({'success':0, 'msg':'successfully deleted study {}'.format(id)})
-        else : raise Exception()
-    except :
+        study = studyService.get(id)
+        if not study: raise Exception()
+        studyService.delete(study)
+        return jsonify({'success':1, 'msg':'successfully deleted study {}'.format(id)})
+    except Exception as e:
+        print e
         return jsonify({'success':0, 'msg':'failed to delete study {}'.format(id)})
+
+########################################################################################################
+# Study Issue
+########################################################################################################
+
+@studyCnt.route('/study/<int:id>/issues', methods=['GET'])
+def getStudyIssues(id) :
+    try :
+        study = studyService.get(id)
+        if not study: raise Exception()
+        return jsonify({'success':1, 'issues':[i.dict() for i in study.issues]})
+    except Exception as e:
+        print e
+        return jsonify({'success':0})
+
+@studyCnt.route('/study/<int:studyId>/issue', methods=['POST'])
+def postStudyIssue(studyId) :
+    try :
+        bodyJson = request.get_json()
+        issue = studyService.createIssue(study_id=studyId, **bodyJson)
+        if not issue : raise Exception()
+        return jsonify({'success':1, 'issue':issue.dict()})
+    except Exception as e :
+        print e
+        return jsonify({'success':0})
+
+@studyCnt.route('/study/issue/<int:id>', methods=['GET'])
+def getStudyIssue(id) :
+    try :
+        issue = studyService.getIssue(id)
+        if not issue : raise Exception()
+        return jsonify({'success':1, 'issue':issue.dict()})
+    except Exception as e:
+        print e
+        return jsonify({'success':0})
+
+@studyCnt.route('/study/issue/<int:id>', methods=['PUT'])
+def putStudyIssue(id) :
+    try :
+        issue = studyService.getIssue(id)
+        if not issue: raise Exception()
+        bodyJson = request.get_json()
+        for key in bodyJson.keys() :
+            if hasattr(issue, key) : setattr(issue, key, bodyJson[key])
+        return jsonify({'success':1})
+    except Exception as e:
+        print e
+        return jsonify({'success':0})
+
+@studyCnt.route('/study/issue/<int:id>', methods=['DELETE'])
+def deleteStudyIssue(id) :
+    try :
+        issue = studyService.getIssue(id)
+        if not issue : raise Exception()
+        studyService.delete(issue)
+        return jsonify({'success':1})
+    except Exception as e :
+        print e
+        return jsonify({'success':0})

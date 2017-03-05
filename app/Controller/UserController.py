@@ -6,6 +6,7 @@ from app.Model.UserModel import User
 from app.Misc.my_getter import data_get
 
 import app.Service.UserService as userService
+import app.Service.StudyService as studyService
 
 userCnt = Blueprint('userCnt', __name__)
 
@@ -54,3 +55,13 @@ def signup() :
 	if not user :
 		return jsonify({'success':0, 'msg':msg})
 	return jsonify({'success':1, 'user':user.dict()})
+
+@userCnt.route('/join_study/<int:studyNo>', methods=['POST'])
+def postJoinStudy(studyNo) :
+	if current_user.is_anonymous :
+		return jsonify({'success':0, 'msg':'login required'})
+	study = studyService.get(studyNo)
+	if not study:
+		return jsonify({'success':0, 'msg':'failed to find study {}'.format(studyNo)})
+	current_user.studies.append(study)
+	return jsonify({'success':1})

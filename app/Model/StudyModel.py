@@ -21,7 +21,8 @@ class Study(db.Model) :
 
     users = db.relationship('User', secondary=user_study_conn, \
         backref=db.backref('studies', lazy='dynamic'))
-    
+    issues = db.relationship('StudyIssue', lazy='dynamic')
+
     @aggregated('users', db.Column(db.Integer))
     def user_num(self) :
         return db.func.count(User.id)
@@ -42,7 +43,40 @@ class Study(db.Model) :
         }
         if join :
             joined = {
-                'users': [i.dict() for i in self.users]
+                'users': [i.dict() for i in self.users],
+                'issues': [i.dict() for i in self.issues]
             }
-            base = dict(base, **join)
+            base = dict(base, **joined)
+        return base
+
+class StudyIssue(db.Model) :
+    __tablename__ = 'studyissue'
+    id = db.Column(db.Integer, primary_key=True)
+    study_id = db.Column(db.Integer, db.ForeignKey('study.id'))
+    title = db.Column(db.Text)
+    content = db.Column(db.Text)
+
+    created_date = db.Column(db.DateTime)
+
+    study = db.relationship('Study')
+
+    def __init__(self, study_id, title='', content='', id=None, created_date=None) :
+        self.title = title
+        self.content = content
+        self.study_id = study_id
+        self.id = id
+        self.created_date = created_date or datetime.now()
+    def __repr__(self) :
+        return '<StudyIssue id:{}, title:{}>'.format(self.id, self.title)
+    def dict(self,join=False) :
+        base = {
+            'id':self.id,
+            'title':self.title,
+            'content':self.content
+        }
+        if join :
+            joined = {
+                'study':self.study.dict()
+            }
+            base = dict(base, **joined)
         return base
