@@ -6,10 +6,12 @@ class Event(db.Model):
 	__tablename__ = 'event'
 	id = db.Column(db.Integer, primary_key=True)
 	writer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	study_id = db.Column(db.Integer, db.ForeignKey('study.id'))
 	date = db.Column(db.DateTime)
 	content = db.Column(db.Text)
 
 	writer = db.relationship('User')
+	study = db.relationship('Study')
 	def __init__(self, writer_id, date, content=''):
 		self.writer_id = writer_id
 		self.date = datetime.strptime(date, '%Y-%m-%d')

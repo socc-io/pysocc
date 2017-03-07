@@ -22,6 +22,7 @@ class Study(db.Model) :
     users = db.relationship('User', secondary=user_study_conn, \
         backref=db.backref('studies', lazy='dynamic'))
     issues = db.relationship('StudyIssue', lazy='dynamic')
+    events = db.relationship('Event', lazy='dynamic')
 
     @aggregated('users', db.Column(db.Integer))
     def user_num(self) :
