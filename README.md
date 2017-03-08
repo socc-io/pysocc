@@ -38,10 +38,9 @@ OneToOne, ManyToMany를 TODO에서 표현하지 않았습니다. 세부 마크�
 
 - [x] [Study](md/TODO_Study.md) 
       - [x] [StudyIssue](md/TODO_StudyIssue.md)
-      - [ ] StudyPlan
-       - [ ] StudyPlanAttendance
 - [x] Event
       - [ ] EventComment
+      - [x] EventAttendance
 - [x] User
 
 ## 기타
