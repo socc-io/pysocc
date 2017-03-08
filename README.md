@@ -11,6 +11,10 @@
 
 위의 모듈들을 설치해야한다.
 
+```sh
+sudo python -m pip install -r requirements.txt
+```
+
 ### Database 연동
 
  /app/configure.py
