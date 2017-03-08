@@ -4,6 +4,8 @@
 * flask_login
 * flask_admin
 * flask_sqlalchemy
+* pytest
+* pymysql
 * SQLAlchemy
 * sqlalchemy_utils
 

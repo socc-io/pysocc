@@ -8,6 +8,8 @@ from app.Misc.my_getter import data_get
 import app.Service.UserService as userService
 import app.Service.StudyService as studyService
 
+import hashlib
+
 userCnt = Blueprint('userCnt', __name__)
 
 @userCnt.route('/whoami')
@@ -17,7 +19,7 @@ def whoami() :
 	else :
 		return jsonify({'success':1, 'user':current_user.dict()})
 
-@userCnt.route('/login')
+@userCnt.route('/login', methods=['GET', 'POST'])
 def login() :
 	if request.method == 'GET' :
 		return 'login page not exists'
@@ -31,13 +33,14 @@ def login() :
 		user, db_msg = userService.findOneByEmail(data.get('email'))
 		if not user :
 			return jsonify({'success':0, 'msg':'invalid email'})
-		if user.password != data.get('password') :
-			return jsonify({'success':0, 'msg':'invalid password'})
+		m = hashlib.sha256(); m.update(data.get('password').strip());
+		if user.password != m.hexdigest() :
+			return jsonify({'success':0, 'msg':'invalid password, {}, {}'.format(user.password, m.hexdigest())})
 		login_user(user)
 		userService.updateLastDate(user)
 		return jsonify({'success':1, 'user':user.dict()})
 
-@userCnt.route('/logout')
+@userCnt.route('/logout', methods=['POST'])
 def logout() :
 	if not current_user.is_anonymous :
 		logout_user()

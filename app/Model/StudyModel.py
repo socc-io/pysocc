@@ -24,10 +24,6 @@ class Study(db.Model) :
     issues = db.relationship('StudyIssue', lazy='dynamic')
     events = db.relationship('Event', lazy='dynamic')
 
-    @aggregated('users', db.Column(db.Integer))
-    def user_num(self) :
-        return db.func.count(User.id)
-
     def __init__(self, name, id=None, created_date=None) :
         self.name = name
         self.created_date = created_date or datetime.now()

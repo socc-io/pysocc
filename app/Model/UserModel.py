@@ -1,14 +1,14 @@
 from app import db
 from app.Misc import random_generate_alphabet
 
-import datetime
+import datetime, hashlib
 
 class User(db.Model) :
 	__tablename__ = 'user'
 	id = db.Column(db.Integer, primary_key=True)
 	apikey = db.Column(db.String(64))
 	email = db.Column(db.String(256))
-	password = db.Column(db.String(256))
+	password = db.Column(db.String(65))
 	role = db.Column(db.String(32))
 	active = db.Column(db.Integer)
 
@@ -34,7 +34,9 @@ class User(db.Model) :
 
 	def __init__(self, email, password) :
 		self.email = email
-		self.password = password
+		m = hashlib.sha256()
+		m.update(password.strip())
+		self.password = m.hexdigest()
 
 		self.role = 'USER'
 		self.active = 1
@@ -45,6 +47,7 @@ class User(db.Model) :
 
 	def dict(self) :
 		return {
+			'id'    : self.id,
 			'apikey': self.apikey,
 			'email' : self.email,
 			'role'  : self.role,
