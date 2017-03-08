@@ -13,16 +13,8 @@
 
 ### Database 연동
 
- /tmp/에 socc.db라는 이름으로(/tmp/socc.db 가 존재하도록) sqlite3 Database파일을 만들거나, [configure.py](app/configure.py) 에서 SQLALCHEMY_DATABASE_URI 변수를 설정해주어야 합니다.
-
-유닉스의 경우 아래와 같이 쉘에서 실행시켜야 합니다.
-
-```sh
-sudo apt install sqlite3
-sqlite3 /tmp/socc.db
-```
-
-윈도우의 경우 https://www.sqlite.org/ 에서 sqlite3를 받아 적당한 위치에 .db파일을 만들어, configure.py를 설정해야합니다.
+ /app/configure.py
+ MYSQL Configuration set
 
 ## testment
 
