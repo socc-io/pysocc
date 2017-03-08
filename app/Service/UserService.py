@@ -25,3 +25,7 @@ def signup(email, password, **kwargs) :
 
 def updateLastDate(user, **kwargs) :
 	user.last_date = datetime.datetime.now()
+
+def delete(obj) :
+	db.session.delete(obj)
+	db.session.commit()

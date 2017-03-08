@@ -22,6 +22,12 @@ sqlite3 /tmp/socc.db
 
 윈도우의 경우 https://www.sqlite.org/ 에서 sqlite3를 받아 적당한 위치에 .db파일을 만들어, configure.py를 설정해야합니다.
 
+## testment
+
+```sh
+pytest
+```
+
 ## TODO
 
 TODO는 기본적으로 Model을 중심으로 나열되어 있습니다. 각 항목은 항목명을 이름으로하는 Model을 다루는 Service, Controller전반에 대한 Task를 의미합니다.

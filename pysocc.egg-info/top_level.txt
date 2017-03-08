@@ -1,7 +1,7 @@
+SQLAlchemy
 flask
-flask_login
 flask_admin
+flask_login
 flask_sqlalchemy
 pytest
-SQLAlchemy
 sqlalchemy_utils

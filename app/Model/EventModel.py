@@ -1,6 +1,11 @@
 from app import db
 from datetime import datetime, timedelta
 
+event_attendance = db.Table('event_attendance',
+	db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+	db.Column('event_id', db.Integer, db.ForeignKey('event.id'))
+)
+
 class Event(db.Model):
 	"""Event Model"""
 	__tablename__ = 'event'
@@ -12,10 +17,12 @@ class Event(db.Model):
 
 	writer = db.relationship('User')
 	study = db.relationship('Study')
-	def __init__(self, writer_id, date, content=''):
+	attending_users = db.relationship('User', secondary=event_attendance)
+	def __init__(self, writer_id, date, content='', study_id=None):
 		self.writer_id = writer_id
 		self.date = datetime.strptime(date, '%Y-%m-%d')
 		self.content = content
+		self.study_id = study_id
 	def __repr__(self):
 		return '<Event date:{}, content: {}>'.format(self.date, self.content)
 	def dict(self, join=False) :

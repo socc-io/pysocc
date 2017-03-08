@@ -15,6 +15,8 @@ class User(db.Model) :
 	last_date = db.Column(db.DateTime)
 	created_date = db.Column(db.DateTime)
 
+	attending_events = db.relationship('Event', secondary='event_attendance')
+
 	@property
 	def is_authenticated(self) :
 		return True

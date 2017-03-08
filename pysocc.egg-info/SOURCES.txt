@@ -1,0 +1,4 @@
+pysocc.egg-info/PKG-INFO
+pysocc.egg-info/SOURCES.txt
+pysocc.egg-info/dependency_links.txt
+pysocc.egg-info/top_level.txt
