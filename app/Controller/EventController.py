@@ -1,6 +1,6 @@
 from flask import Blueprint, request, session, jsonify, render_template
 from flask_login import login_required, current_user
-
+from app.Misc.my_getter import data_get
 import app.Service.EventService as eventService
 
 eventCnt = Blueprint('eventCnt', __name__)
@@ -8,8 +8,7 @@ eventCnt = Blueprint('eventCnt', __name__)
 @eventCnt.route('/event', methods=['POST'])
 def postEvent() :
 	try :
-		if current_user.is_anonymous : raise Exception()
-		bodyJson = request.get_json()
+		bodyJson = data_get()
 		event = eventService.create(writer_id=current_user.id,**bodyJson)
 		if not event: raise Exception()
 		return jsonify({'success':1, 'event':event.dict()})
@@ -39,7 +38,7 @@ def putEvent(id) :
 	try :
 		event = eventService.get(id)
 		if not event: raise Exception()
-		bodyJson = request.get_json()
+		bodyJson = data_get()
 		for key in bodyJson.keys() :
 			if hasattr(event, key): setattr(event, key, bodyJson[key])
 		return jsonify({'success':1})
@@ -54,5 +53,20 @@ def deleteEvent(id) :
 		eventService.delete(event)
 		return jsonify({'success':1})
 	except Exception as e:
+		print e
+		return jsonify({'success':0})
+
+########################################################################################################
+# Event Comment
+########################################################################################################
+
+@eventCnt.route('/event/<int:event_id>/comment', methods=['POST'])
+def postEventComment(event_id) :
+	try :
+		bodyJson = data_get()
+		comment = eventService.createComment(event_id=event_id, **bodyJson)
+		if not comment: raise Exception()
+		return jsonify({'success':1, 'comment':comment.dict()})
+	except Exception as e :
 		print e
 		return jsonify({'success':0})

@@ -10,7 +10,6 @@ studyCnt = Blueprint('studyCnt', __name__)
 @studyCnt.route('/study', methods=['POST'])
 def postStudy() :
     try :
-        if current_user.is_anonymous : raise Exception()
         success, bodyJson = data_get()
         if studyService.checkName(bodyJson['name']) : raise Exception()
         study = studyService.create(owner_id=current_user.id, **bodyJson)
@@ -45,7 +44,6 @@ def putStudy(id) :
 @studyCnt.route('/study/<int:id>', methods=['DELETE'])
 def deleteStudy(id) :
     try :
-        if current_user.is_anonymous: raise Exception()
         study = studyService.get(id)
         if not study: raise Exception()
         if current_user.id != study.owner_id : raise Exception()

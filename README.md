@@ -39,10 +39,11 @@ OneToOne, ManyToMany를 TODO에서 표현하지 않았습니다. 세부 마크�
 - [x] [Study](md/TODO_Study.md) 
       - [x] [StudyIssue](md/TODO_StudyIssue.md)
 - [x] Event
-      - [ ] EventComment
+      - [x] EventComment
       - [x] EventAttendance
 - [x] User
 
+- [ ] Change controller style to `Method Views for APIs` in http://flask.pocoo.org/docs/0.12/views/
 ## 기타
 
 * None
