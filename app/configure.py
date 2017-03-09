@@ -1,6 +1,6 @@
 
-MYSQL_USERNAME = 'root'
-MYSQL_PASSWORD = 'smilu9791'
+MYSQL_USERNAME = 'socc'
+MYSQL_PASSWORD = 'soccSecret'
 MYSQL_HOST = 'localhost'
 MYSQL_DATABASE = 'socc'
 
