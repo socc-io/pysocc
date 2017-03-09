@@ -14,7 +14,7 @@ app = Flask(__name__)
 app.config.from_object('app.configure')
 db = SQLAlchemy(app)
 
-white_list = ['/', '/home', '/give_me_json', '/login']
+white_list = ['/', '/home', '/hello', '/give_me_json', '/login', '/signup']
 @app.before_request
 def beforeRequest() :
 	for i in white_list: 
