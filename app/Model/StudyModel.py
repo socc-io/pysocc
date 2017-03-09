@@ -15,6 +15,8 @@ class Study(db.Model) :
     """Study"""
     __tablename__ = 'study'
     id = db.Column(db.Integer, primary_key=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    description = db.Column(db.Text)
     name = db.Column(db.String(128))
     
     created_date = db.Column(db.DateTime)
@@ -23,18 +25,23 @@ class Study(db.Model) :
         backref=db.backref('studies', lazy='dynamic'))
     issues = db.relationship('StudyIssue', lazy='dynamic')
     events = db.relationship('Event', lazy='dynamic')
+    owner = db.relationship('User')
 
-    def __init__(self, name, id=None, created_date=None) :
+    def __init__(self, owner_id, name, description='', id=None, created_date=None) :
+        self.owner_id = owner_id
         self.name = name
+        self.description = description
         self.created_date = created_date or datetime.now()
         self.id = id
 
     def __repr__(self) :
-        return '<Study {}, id: {}>'.format(self.name, self.id)
+        return '<Study {}, id: {}, description: {}>'.format(self.name, self.id, self.description)
 
     def dict(self, join=False) :
         base = {
+            'owner_id': self.owner_id,
             'id': self.id,
+            'description': self.description,
             'name': self.name,
             'created_date': self.created_date,
         }

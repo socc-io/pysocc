@@ -38,6 +38,8 @@ class User(db.Model) :
 		m.update(password.strip())
 		self.password = m.hexdigest()
 
+		print 'hashed {} -> {}'.format(password.strip(), self.password)
+
 		self.role = 'USER'
 		self.active = 1
 		self.apikey = random_generate_alphabet(64)

@@ -12,7 +12,7 @@ import hashlib
 
 userCnt = Blueprint('userCnt', __name__)
 
-@userCnt.route('/whoami')
+@userCnt.route('/whoami', methods=['GET'])
 def whoami() :
 	if current_user.is_anonymous :
 		return jsonify({'success':0, 'msg':'you are not logined'})
@@ -35,7 +35,7 @@ def login() :
 			return jsonify({'success':0, 'msg':'invalid email'})
 		m = hashlib.sha256(); m.update(data.get('password').strip());
 		if user.password != m.hexdigest() :
-			return jsonify({'success':0, 'msg':'invalid password, {}, {}'.format(user.password, m.hexdigest())})
+			return jsonify({'success':0, 'msg':'invalid password'})
 		login_user(user)
 		userService.updateLastDate(user)
 		return jsonify({'success':1, 'user':user.dict()})
@@ -77,4 +77,14 @@ def postJoinStudy(studyNo) :
 	if not study:
 		return jsonify({'success':0, 'msg':'failed to find study {}'.format(studyNo)})
 	current_user.studies.append(study)
+	return jsonify({'success':1})
+
+@userCnt.route('/exit_study/<int:studyNo>', methods=['POST'])
+def postExitStudy(studyNo) :
+	if current_user.is_anonymous :
+		return jsonify({'success':0, 'msg':'login required'})
+	study = studyService.get(studyNo)
+	if not study:
+		return jsonify({'success':0, 'msg':'failed to find study {}'.format(studyNo)})
+	current_user.studies.remove(study)
 	return jsonify({'success':1})

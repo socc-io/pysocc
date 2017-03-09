@@ -1,5 +1,6 @@
 from flask import Blueprint, request, session, jsonify, render_template
 from flask_login import login_required, current_user
+from app.Misc.my_getter import data_get
 
 import app.Service.UserService as userService
 import app.Service.StudyService as studyService
@@ -9,8 +10,10 @@ studyCnt = Blueprint('studyCnt', __name__)
 @studyCnt.route('/study', methods=['POST'])
 def postStudy() :
     try :
-        bodyJson = request.get_json()
-        study = studyService.create(**bodyJson)
+        if current_user.is_anonymous : raise Exception()
+        success, bodyJson = data_get()
+        if studyService.checkName(bodyJson['name']) : raise Exception()
+        study = studyService.create(owner_id=current_user.id, **bodyJson)
         if not study : raise Exception()
         return jsonify({'success':1, 'study':study.dict()})
     except Exception as e :
@@ -31,7 +34,7 @@ def putStudy(id) :
     try :
         study = studyService.get(id)
         if not study: raise Exception('failed to find study by id: {}'.format(id))
-        bodyJson = request.get_json()
+        success, bodyJson = data_get()
         for key in bodyJson.keys() :
             if hasattr(study,key) : setattr(study,key,bodyJson[key])
         return jsonify({'success':1})
@@ -42,8 +45,10 @@ def putStudy(id) :
 @studyCnt.route('/study/<int:id>', methods=['DELETE'])
 def deleteStudy(id) :
     try :
+        if current_user.is_anonymous: raise Exception()
         study = studyService.get(id)
         if not study: raise Exception()
+        if current_user.id != study.owner_id : raise Exception()
         studyService.delete(study)
         return jsonify({'success':1, 'msg':'successfully deleted study {}'.format(id)})
     except Exception as e:
@@ -67,7 +72,7 @@ def getStudyIssues(id) :
 @studyCnt.route('/study/<int:studyId>/issue', methods=['POST'])
 def postStudyIssue(studyId) :
     try :
-        bodyJson = request.get_json()
+        success, bodyJson = data_get()
         issue = studyService.createIssue(study_id=studyId, **bodyJson)
         if not issue : raise Exception()
         return jsonify({'success':1, 'issue':issue.dict()})
@@ -90,7 +95,7 @@ def putStudyIssue(id) :
     try :
         issue = studyService.getIssue(id)
         if not issue: raise Exception()
-        bodyJson = request.get_json()
+        success, bodyJson = data_get()
         for key in bodyJson.keys() :
             if hasattr(issue, key) : setattr(issue, key, bodyJson[key])
         return jsonify({'success':1})

@@ -32,8 +32,16 @@ import random, os, json
 # 		return (False, err_msg)
 # 	return (True, data)          # if success
 
-def data_get(keylist) :
-	data = json.loads(request.get_data())
+def data_get(keylist=[]) :
+	data= None
+	try :
+		data = json.loads(request.get_data())
+	except ValueError as e :
+		data = dict(request.form)
+		if True :
+			for key in data.keys() :
+				value = data[key]
+				data[key] = value[0] if type(value) == type([]) else value
 	if not data : return (False, None)
 	for key in keylist :
 		if not data.get(key) : return (False, key)

@@ -37,3 +37,37 @@ class Event(db.Model):
 			}
 			base = dict(base, **joined)
 		return base
+
+class EventComment(db.Model) :
+	__tablename__ = 'eventcomment'
+	id = db.Column(db.Integer, primary_key=True)
+	event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
+	writer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	created_date = db.Column(db.DateTime)
+	content = db.Column(db.Text)
+
+	event = db.relationship('Event')
+	writer = db.relationship('User')
+
+	def __init__(self, event_id, writer_id, content, created_date=None) :
+		self.event_id = event_id
+		self.writer_id = writer_id
+		self.content = content
+		self.created_date = created_date or datetime.now()
+	def __repr__(self) :
+		return '<EventComment, content: {}>'.format(self.content)
+	def dict(self, join=False) :
+		base = {
+			'id': self.id,
+			'event_id': self.event_id,
+			'writer_id' : self.writer_id,
+			'created_date' : self.created_date,
+			'content' : self.content
+		}
+		if join :
+			joined = {
+				'event': self.event.dict(),
+				'writer': self.writer.dict()
+			}
+			base = dict(base, **joined)
+		return base
