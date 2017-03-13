@@ -1,4 +1,12 @@
 # SOCC API Server (Python Flask)
+##Run
+```sh
+python run.py
+```
+or
+```sh
+uwsgi wsgi.ini
+```
 ##Requirements
 * flask
 * flask_login
