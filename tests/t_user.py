@@ -11,10 +11,7 @@ def db() :
 
 import random
 
-def randomChar() :
-	return chr(random.randint(ord('a'),ord('z')))
-
-def test_signup_login_logout_signout(app, db) :
+def baseLogin(app, db) :
 	email = ''.join(randomChar() for i in range(10)) + '@gmail.com'
 	password = ''.join(randomChar() for i in range(10))
 	ep = dumps(dict(email=email, password=password))
@@ -28,13 +25,23 @@ def test_signup_login_logout_signout(app, db) :
 	res = app.post('/login', data=ep)
 	dataJson = loads(res.data)
 	assert dataJson['success'] == 1
+	return email, password, ep
+
+def baseLoginEnd(app, db) :
+	res = app.post('/signout')
+	dataJson = loads(res.data)
+	if dataJson['success'] == 0 : print dataJson['msg']
+	assert dataJson['success'] == 1
+
+def randomChar() :
+	return chr(random.randint(ord('a'),ord('z')))
+
+def test_signup_login_logout_signout(app, db) :
+	email, password, ep = baseLogin(app, db)
 
 	res = app.post('/logout')
 	dataJson = loads(res.data)
 	assert dataJson['success'] == 1
 
 	app.post('/login',data=ep)
-	res = app.post('/signout')
-	dataJson = loads(res.data)
-	if dataJson['success'] == 0 : print dataJson['msg']
-	assert dataJson['success'] == 1
+	baseLoginEnd(app, db)

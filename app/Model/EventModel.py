@@ -27,6 +27,7 @@ class Event(db.Model):
 		return '<Event date:{}, content: {}>'.format(self.date, self.content)
 	def dict(self, join=False) :
 		base = {
+			'id': self.id,
 			'writer_id': self.writer_id,
 			'date': self.date,
 			'content': self.content

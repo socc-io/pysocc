@@ -8,7 +8,7 @@ eventCnt = Blueprint('eventCnt', __name__)
 @eventCnt.route('/event', methods=['POST'])
 def postEvent() :
 	try :
-		bodyJson = data_get()
+		success, bodyJson = data_get()
 		event = eventService.create(writer_id=current_user.id,**bodyJson)
 		if not event: raise Exception()
 		return jsonify({'success':1, 'event':event.dict()})
@@ -63,7 +63,7 @@ def deleteEvent(id) :
 @eventCnt.route('/event/<int:event_id>/comment', methods=['POST'])
 def postEventComment(event_id) :
 	try :
-		bodyJson = data_get()
+		success, bodyJson = data_get()
 		comment = eventService.createComment(event_id=event_id, **bodyJson)
 		if not comment: raise Exception()
 		return jsonify({'success':1, 'comment':comment.dict()})
