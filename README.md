@@ -45,10 +45,10 @@ TODO리스트는 Model중심으로 나열되어있습니다. 자식항목들이 
 OneToOne, ManyToMany를 TODO에서 표현하지 않았습니다. 세부 마크다운에서 확인해주세요.
 
 - [x] [Study](md/TODO_Study.md) 
-      - [x] [StudyIssue](md/TODO_StudyIssue.md)
+- [x] [StudyIssue](md/TODO_StudyIssue.md)
 - [x] Event
-      - [x] EventComment
-      - [x] EventAttendance
+- [x] EventComment
+- [x] EventAttendance
 - [x] User
 
 - [ ] Change controller style to `Method Views for APIs` in http://flask.pocoo.org/docs/0.12/views/
