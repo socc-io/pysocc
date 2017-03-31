@@ -2,10 +2,12 @@ from flask import Blueprint, request, session, jsonify, render_template
 from flask_login import login_required, current_user
 from app.Misc.my_getter import data_get
 import app.Service.EventService as eventService
+from app import autodoc as auto
 
 eventCnt = Blueprint('eventCnt', __name__)
 
 @eventCnt.route('/event', methods=['POST'])
+@auto.doc('event')
 def postEvent() :
 	try :
 		success, bodyJson = data_get()
@@ -16,6 +18,7 @@ def postEvent() :
 		print e
 		return jsonify({'success':0})
 @eventCnt.route('/event/<int:id>', methods=['GET'])
+@auto.doc('event')
 def getEvent(id) :
 	try :
 		event = eventService.get(id)
@@ -25,6 +28,7 @@ def getEvent(id) :
 		print e
 		return jsonify({'success':0})
 @eventCnt.route('/event/range/<string:left>/<string:right>', methods=['GET'])
+@auto.doc('event')
 def getEventWithRange(left, right) :
 	try :
 		events = eventService.getWithRange(left, right)
@@ -34,6 +38,7 @@ def getEventWithRange(left, right) :
 		print e
 		return jsonify({'success':0})
 @eventCnt.route('/event/<int:id>', methods=['PUT'])
+@auto.doc('event')
 def putEvent(id) :
 	try :
 		event = eventService.get(id)
@@ -46,6 +51,7 @@ def putEvent(id) :
 		print e
 		return jsonify({'success':0})
 @eventCnt.route('/event/<int:id>', methods=['DELETE'])
+@auto.doc('event')
 def deleteEvent(id) :
 	try :
 		event = eventService.get(id)

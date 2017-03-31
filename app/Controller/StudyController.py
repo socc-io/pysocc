@@ -5,9 +5,12 @@ from app.Misc.my_getter import data_get
 import app.Service.UserService as userService
 import app.Service.StudyService as studyService
 
+from app import autodoc as auto
+
 studyCnt = Blueprint('studyCnt', __name__)
 
 @studyCnt.route('/study', methods=['POST'])
+@auto.doc('study')
 def postStudy() :
     try :
         success, bodyJson = data_get()
@@ -19,6 +22,7 @@ def postStudy() :
         return jsonify({'success':0, 'msg':'failed to create study'})
 
 @studyCnt.route('/study/<int:id>', methods=['GET'])
+@auto.doc('study')
 def getStudy(id) :
     try :
         study = studyService.get(id)
@@ -29,6 +33,7 @@ def getStudy(id) :
         return jsonify({'success':0, 'msg':'failed to get study by id: {}'.format(id)})
 
 @studyCnt.route('/study/<int:id>', methods=['PUT'])
+@auto.doc('study')
 def putStudy(id) :
     try :
         study = studyService.get(id)
@@ -42,6 +47,7 @@ def putStudy(id) :
         return jsonify({'success':0}) 
 
 @studyCnt.route('/study/<int:id>', methods=['DELETE'])
+@auto.doc('study')
 def deleteStudy(id) :
     try :
         study = studyService.get(id)
@@ -58,6 +64,7 @@ def deleteStudy(id) :
 ########################################################################################################
 
 @studyCnt.route('/study/<int:id>/issues', methods=['GET'])
+@auto.doc('study')
 def getStudyIssues(id) :
     try :
         study = studyService.get(id)
@@ -68,6 +75,7 @@ def getStudyIssues(id) :
         return jsonify({'success':0})
 
 @studyCnt.route('/study/<int:studyId>/issue', methods=['POST'])
+@auto.doc('study')
 def postStudyIssue(studyId) :
     try :
         success, bodyJson = data_get()
@@ -79,6 +87,7 @@ def postStudyIssue(studyId) :
         return jsonify({'success':0})
 
 @studyCnt.route('/study/issue/<int:id>', methods=['GET'])
+@auto.doc('study')
 def getStudyIssue(id) :
     try :
         issue = studyService.getIssue(id)
@@ -89,6 +98,7 @@ def getStudyIssue(id) :
         return jsonify({'success':0})
 
 @studyCnt.route('/study/issue/<int:id>', methods=['PUT'])
+@auto.doc('study')
 def putStudyIssue(id) :
     try :
         issue = studyService.getIssue(id)
@@ -102,6 +112,7 @@ def putStudyIssue(id) :
         return jsonify({'success':0})
 
 @studyCnt.route('/study/issue/<int:id>', methods=['DELETE'])
+@auto.doc('study')
 def deleteStudyIssue(id) :
     try :
         issue = studyService.getIssue(id)

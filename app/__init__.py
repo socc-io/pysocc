@@ -7,11 +7,13 @@ from flask import Flask, jsonify, request, url_for
 from flask_login import current_user
 from app.secret import *
 from flask_sqlalchemy import SQLAlchemy
+from flask_autodoc.autodoc import Autodoc
 
 import json
 
 app = Flask(__name__)
 app.config.from_object('app.configure')
+autodoc = Autodoc(app)
 db = SQLAlchemy(app)
 
 white_list = ['/', '/home', '/hello', '/give_me_json', '/login', '/signup']
@@ -19,6 +21,7 @@ white_list = ['/', '/home', '/hello', '/give_me_json', '/login', '/signup']
 def beforeRequest() :
 	for i in white_list: 
 		if str(request.url_rule) == i: return
+	if '/doc' in str(request.url): return
 	if current_user.is_anonymous: return jsonify({'success':0, 'msg':'please login'})
 
 from app.Controller import init_controller

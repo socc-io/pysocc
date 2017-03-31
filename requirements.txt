@@ -2,6 +2,7 @@ flask
 flask_login
 flask_admin
 flask_sqlalchemy
+flask-autodoc
 pytest
 pymysql
 SQLAlchemy
