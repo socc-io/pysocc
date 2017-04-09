@@ -31,7 +31,14 @@ def getStudy(id) :
     except Exception as e:
         print e
         return jsonify({'success':0, 'msg':'failed to get study by id: {}'.format(id)})
-
+@studyCnt.route('/study', methods=['GET'])
+def getStudies() :
+    try :
+        studies = studyService.getAll()
+        return jsonify({'success':1, 'studies': [i.dict() for i in studies]})
+    except Exception as e:
+        print e
+        return jsonify({'success':0, 'msg': str(e)})
 @studyCnt.route('/study/<int:id>', methods=['PUT'])
 @auto.doc('study')
 def putStudy(id) :

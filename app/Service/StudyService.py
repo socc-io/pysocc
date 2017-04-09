@@ -4,6 +4,9 @@ from app.Model.StudyModel import Study, StudyIssue
 def get(id) :
     return db.session.query(Study).get(id)
 
+def getAll() :
+    return db.session.query(Study).all()
+
 def create(owner_id, **args) :
     obj = Study(owner_id=owner_id, **args)
     db.session.add(obj)

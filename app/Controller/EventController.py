@@ -27,6 +27,14 @@ def getEvent(id) :
 	except Exception as e:
 		print e
 		return jsonify({'success':0})
+@eventCnt.route('/event', methods=['GET'])
+def getEvents() :
+	try :
+		events = eventService.getAll()
+		return jsonify({'success':1, 'events': [i.dict() for i in events]})
+	except Exception as e:
+		print e
+		return jsonify({'success':0})
 @eventCnt.route('/event/range/<string:left>/<string:right>', methods=['GET'])
 @auto.doc('event')
 def getEventWithRange(left, right) :

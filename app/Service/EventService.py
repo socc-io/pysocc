@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 
 def get(id) :
 	return db.session.query(Event).get(id)
+def getAll() :
+	return db.session.query(Event).all()
 def getWithRange(left, right) :
 	leftDate  = datetime.strptime(left, '%Y-%m-%d')
 	rightDate = datetime.strptime(right,'%Y-%m-%d')
