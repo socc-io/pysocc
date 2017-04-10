@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import imp, sys
 imp.reload(sys)
 try: sys.setdefaultencoding('UTF8')

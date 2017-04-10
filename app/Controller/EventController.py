@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Blueprint, request, session, jsonify, render_template
 from flask_login import login_required, current_user
 from app.Misc.my_getter import data_get
@@ -27,10 +29,10 @@ def getEvent(id) :
 	except Exception as e:
 		print e
 		return jsonify({'success':0})
-@eventCnt.route('/event', methods=['GET'])
-def getEvents() :
+@eventCnt.route('/event/page/<int:page>', methods=['GET'])
+def getEventPage(page) :
 	try :
-		events = eventService.getAll()
+		events = eventService.getPage(page=page, args=request.args)
 		return jsonify({'success':1, 'events': [i.dict() for i in events]})
 	except Exception as e:
 		print e
@@ -63,12 +65,13 @@ def putEvent(id) :
 def deleteEvent(id) :
 	try :
 		event = eventService.get(id)
-		if not event: raise Exception()
+		if not event: raise Exception(u'존재하지 않는 이벤트입니다')
+		if current_user.id != event.writer_id: raise Exception(u'작성자만 지울 수 있습니다')
 		eventService.delete(event)
 		return jsonify({'success':1})
 	except Exception as e:
 		print e
-		return jsonify({'success':0})
+		return jsonify({'success':0, 'msg':str(e)})
 
 ########################################################################################################
 # Event Comment

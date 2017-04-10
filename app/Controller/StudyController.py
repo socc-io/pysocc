@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Blueprint, request, session, jsonify, render_template
 from flask_login import login_required, current_user
 from app.Misc.my_getter import data_get
@@ -31,10 +33,10 @@ def getStudy(id) :
     except Exception as e:
         print e
         return jsonify({'success':0, 'msg':'failed to get study by id: {}'.format(id)})
-@studyCnt.route('/study', methods=['GET'])
-def getStudies() :
+@studyCnt.route('/study/page/<int:page>', methods=['GET'])
+def getStudyPage(page) :
     try :
-        studies = studyService.getAll()
+        studies = studyService.getPage(page=page, args=request.args)
         return jsonify({'success':1, 'studies': [i.dict() for i in studies]})
     except Exception as e:
         print e

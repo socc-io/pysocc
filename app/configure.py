@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 
 MYSQL_USERNAME = 'socc'
 MYSQL_PASSWORD = 'soccSecret'

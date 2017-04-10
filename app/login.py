@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask_login import LoginManager
 from app.Model.UserModel import User
 from app.Model import db

@@ -1,11 +1,22 @@
+# -*- coding: utf-8 -*-
+
 from app.Model.EventModel import Event
 from app import db
 from datetime import datetime, timedelta
+
+DEFAULT_PAGE_SIZE = 20
 
 def get(id) :
 	return db.session.query(Event).get(id)
 def getAll() :
 	return db.session.query(Event).all()
+def getPage(page, args) :
+	q = db.session.query(Event)
+	pageSize = args.get('pageSize') or DEFAULT_PAGE_SIZE
+	with args.get('writer_id') as writer_id :
+		if writer_id != None :
+			q = q.filter(Event.writer_id == int(writer_id))
+	return q.limit(pageSize).offset(pageSize*page).all()
 def getWithRange(left, right) :
 	leftDate  = datetime.strptime(left, '%Y-%m-%d')
 	rightDate = datetime.strptime(right,'%Y-%m-%d')

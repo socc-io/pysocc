@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Blueprint, jsonify, Response, redirect
 from app.secret import *
 from app import autodoc as auto
