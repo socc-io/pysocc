@@ -79,6 +79,7 @@ def getStudyIssues(id) :
         study = studyService.get(id)
         if not study: raise Exception()
         return jsonify({'success':1, 'issues':[i.dict() for i in study.issues]})
+
     except Exception as e:
         print e
         return jsonify({'success':0})
@@ -91,43 +92,30 @@ def postStudyIssue(studyId) :
         issue = studyService.createIssue(study_id=studyId, **bodyJson)
         if not issue : raise Exception()
         return jsonify({'success':1, 'issue':issue.dict()})
+
     except Exception as e :
         print e
         return jsonify({'success':0})
 
-@studyCnt.route('/study/issue/<int:id>', methods=['GET'])
-@auto.doc('study')
-def getStudyIssue(id) :
-    try :
-        issue = studyService.getIssue(id)
-        if not issue : raise Exception()
-        return jsonify({'success':1, 'issue':issue.dict()})
-    except Exception as e:
-        print e
-        return jsonify({'success':0})
-
-@studyCnt.route('/study/issue/<int:id>', methods=['PUT'])
-@auto.doc('study')
-def putStudyIssue(id) :
+@studyCnt.route('/study/issue/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+def getPutDelete(id) :
     try :
         issue = studyService.getIssue(id)
         if not issue: raise Exception()
-        success, bodyJson = data_get()
-        for key in bodyJson.keys() :
-            if hasattr(issue, key) : setattr(issue, key, bodyJson[key])
-        return jsonify({'success':1})
+        if request.method == 'GET' :
+            return jsonify({'success':1, 'issue':issue.dict()})
+
+        elif request.method == 'PUT':
+            success, bodyJson = data_get()
+            studyService.put(issue, **bodyJson)
+            return jsonify({'success':1})
+
+        elif request.method == 'DELETE':
+            studyService.delete(issue)
+            return jsonify({'success':1})
+
+        else: raise Exception()
+        
     except Exception as e:
         print e
-        return jsonify({'success':0})
-
-@studyCnt.route('/study/issue/<int:id>', methods=['DELETE'])
-@auto.doc('study')
-def deleteStudyIssue(id) :
-    try :
-        issue = studyService.getIssue(id)
-        if not issue : raise Exception()
-        studyService.delete(issue)
-        return jsonify({'success':1})
-    except Exception as e :
-        print e
-        return jsonify({'success':0})
+        return jsonify({'success':0, 'msg':str(e)})

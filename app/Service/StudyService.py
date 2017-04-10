@@ -5,11 +5,18 @@ from app.Model.StudyModel import Study, StudyIssue
 
 DEFAULT_PAGE_SIZE = 20
 
+def put(obj, **kwargs) :
+    for key in kwargs.keys() :
+        if hasattr(obj, key) : setattr(obj, key, kwargs[key])
+
 def get(id) :
     return db.session.query(Study).get(id)
 
 def getAll() :
     return db.session.query(Study).all()
+
+def getIssue(id) :
+    return db.session.query(StudyIssue).get(id)
 
 def getPage(page, owner_id=None, **kwargs) :
     q = db.session.query(Study)

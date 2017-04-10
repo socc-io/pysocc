@@ -21,6 +21,7 @@ userCnt = Blueprint('userCnt', __name__)
 def whoami() :
     if current_user.is_anonymous :
         return jsonify({'success':0, 'msg':'you are not logined'})
+
     else:
         return jsonify({'success':1, 'user':current_user.dict()})
 
@@ -36,6 +37,7 @@ def login() :
                 return jsonify({'success':0, 'msg':'invalid request format'})
             else :
                 return jsonify({'success':0, 'msg':'{} not found'.format(data)})
+                
         user, db_msg = userService.findOneByEmail(data.get('email'))
         if not user :
             return jsonify({'success':0, 'msg':'invalid email'})

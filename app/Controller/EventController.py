@@ -12,13 +12,15 @@ eventCnt = Blueprint('eventCnt', __name__)
 @auto.doc('event')
 def postEvent() :
 	try :
-		success, bodyJson = data_get()
+		success, bodyJson = data_get() # get data from body of request
 		event = eventService.create(writer_id=current_user.id,**bodyJson)
 		if not event: raise Exception()
 		return jsonify({'success':1, 'event':event.dict()})
+		
 	except Exception as e :
 		print e
 		return jsonify({'success':0})
+
 @eventCnt.route('/event/<int:id>', methods=['GET'])
 @auto.doc('event')
 def getEvent(id) :
@@ -26,17 +28,21 @@ def getEvent(id) :
 		event = eventService.get(id)
 		if not event: raise Exception()
 		return jsonify({'success':1, 'event':event.dict(True)})
+
 	except Exception as e:
 		print e
 		return jsonify({'success':0})
+
 @eventCnt.route('/event/page/<int:page>', methods=['GET'])
 def getEventPage(page) :
 	try :
 		events = eventService.getPage(page=page, **request.args)
 		return jsonify({'success':1, 'events': [i.dict() for i in events]})
+
 	except Exception as e:
 		print e
 		return jsonify({'success':0})
+
 @eventCnt.route('/event/range/<string:left>/<string:right>', methods=['GET'])
 @auto.doc('event')
 def getEventWithRange(left, right) :
@@ -44,22 +50,26 @@ def getEventWithRange(left, right) :
 		events = eventService.getWithRange(left, right)
 		if not events: raise Exception()
 		return jsonify({'success':1, 'events':[i.dict() for i in events]})
+
 	except Exception as e :
 		print e
 		return jsonify({'success':0})
+
 @eventCnt.route('/event/<int:id>', methods=['PUT'])
 @auto.doc('event')
 def putEvent(id) :
 	try :
 		event = eventService.get(id)
 		if not event: raise Exception()
-		bodyJson = data_get()
+		success, bodyJson = data_get()
 		for key in bodyJson.keys() :
 			if hasattr(event, key): setattr(event, key, bodyJson[key])
 		return jsonify({'success':1})
+
 	except Exception as e:
 		print e
 		return jsonify({'success':0})
+
 @eventCnt.route('/event/<int:id>', methods=['DELETE'])
 @auto.doc('event')
 def deleteEvent(id) :
@@ -69,6 +79,7 @@ def deleteEvent(id) :
 		if current_user.id != event.writer_id: raise Exception(u'작성자만 지울 수 있습니다')
 		eventService.delete(event)
 		return jsonify({'success':1})
+
 	except Exception as e:
 		print e
 		return jsonify({'success':0, 'msg':str(e)})
@@ -84,6 +95,44 @@ def postEventComment(event_id) :
 		comment = eventService.createComment(event_id=event_id, **bodyJson)
 		if not comment: raise Exception()
 		return jsonify({'success':1, 'comment':comment.dict()})
+
 	except Exception as e :
 		print e
 		return jsonify({'success':0})
+
+@eventCnt.route('/event/comment/<int:comment_id>', methods=['GET', 'PUT', 'DELETE'])
+def getPutDeleteEventComment(comment_id) :
+	try :
+		comment = eventService.getComment(comment_id)
+		if not comment: raise Exception()
+
+		if request.method == 'GET':
+			return jsonify({'success':1, 'comment':comment.dict()})
+
+		elif request.method == 'PUT':
+			if comment.writer_id != current_user.id: raise Exception()
+			success, bodyJson = data_get()
+			eventService.putComment(comment=comment, **bodyJson)
+			return jsonify({'success':1})
+
+		elif request.method == 'DELETE':
+			if comment.writer_id != current_user.id: raise Exception()
+			eventService.delete(comment)
+			return jsonify({'success':1})
+
+		else: raise Exception()
+
+	except Exception as e:
+		print e
+		return jsonify({'success':0, 'msg':str(e)})
+
+@eventCnt.route('/event/<int:event_id>/comments', methods=['GET'])
+def getEventComments(event_id) :
+	try :
+		event = eventService.get(event_id)
+		if not event: raise Exception()
+		return jsonify({'success':1, 'comments': [i.dict() for i in event.comments]})
+
+	except Exception as e:
+		print e
+		return jsonify({'success':0, 'msg':str(e)})

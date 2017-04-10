@@ -12,14 +12,17 @@ baseCnt = Blueprint('baseCnt', __name__)
 @auto.doc('base')
 def getHome() :
 	return 'home'
+
 @baseCnt.route('/hello', methods=['GET'])
 @auto.doc('base')
 def sayHello() :
 	return 'Hello'
+
 @baseCnt.route('/give_me_json', methods=['GET'])
 @auto.doc('base')
 def giveMeJson() :
 	return jsonify({'success':1})
+	
 @baseCnt.route('/doc')
 def routeDocumentations() :
 	return auto.html()

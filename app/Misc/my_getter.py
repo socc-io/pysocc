@@ -45,4 +45,4 @@ def data_get(keylist=[]) :
 	if not data : return (False, None)
 	for key in keylist :
 		if not data.get(key) : return (False, key)
-	return (True, data)
+	return (True, data) # (isSuccess (are all required data in keylist exist?), data)

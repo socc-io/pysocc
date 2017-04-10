@@ -5,6 +5,11 @@ from app.Model.UserModel import User
 
 import datetime
 
+
+def put(obj, **kwargs) :
+    for key in kwargs.keys() :
+        if hasattr(obj, key) : setattr(obj, key, kwargs[key])
+
 def findByRole(role, **kwargs) :
 	userList = db.session.query(User).filter(User.role == role).all()
 	return userList, 'success'
