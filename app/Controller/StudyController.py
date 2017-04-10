@@ -36,7 +36,7 @@ def getStudy(id) :
 @studyCnt.route('/study/page/<int:page>', methods=['GET'])
 def getStudyPage(page) :
     try :
-        studies = studyService.getPage(page=page, args=request.args)
+        studies = studyService.getPage(page=page, **request.args)
         return jsonify({'success':1, 'studies': [i.dict() for i in studies]})
     except Exception as e:
         print e

@@ -11,12 +11,11 @@ def get(id) :
 def getAll() :
     return db.session.query(Study).all()
 
-def getPage(page, args) :
+def getPage(page, owner_id=None, **kwargs) :
     q = db.session.query(Study)
     pageSize = args.get('pageSize') or DEFAULT_PAGE_SIZE
-    with args.get('owner_id') as owner_id :
-        if owner_id != None :
-            q = q.filter(Study.owner_id == int(owner_id))
+    if owner_id != None :
+        q = q.filter(Study.owner_id == int(owner_id))
     return q.limit(pageSize).offset(page*pageSize).all()
 
 def create(owner_id, **args) :

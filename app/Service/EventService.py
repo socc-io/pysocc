@@ -10,12 +10,13 @@ def get(id) :
 	return db.session.query(Event).get(id)
 def getAll() :
 	return db.session.query(Event).all()
-def getPage(page, args) :
+def getPage(page, writer_id=None, study_id=None, **kwargs) :
 	q = db.session.query(Event)
 	pageSize = args.get('pageSize') or DEFAULT_PAGE_SIZE
-	with args.get('writer_id') as writer_id :
-		if writer_id != None :
-			q = q.filter(Event.writer_id == int(writer_id))
+	if writer_id != None:
+		q = q.filter(Event.writer_id == int(writer_id))
+	if study_id  != None:
+		q = q.filter(Event.study_id == int(study_id))
 	return q.limit(pageSize).offset(pageSize*page).all()
 def getWithRange(left, right) :
 	leftDate  = datetime.strptime(left, '%Y-%m-%d')

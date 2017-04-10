@@ -32,7 +32,7 @@ def getEvent(id) :
 @eventCnt.route('/event/page/<int:page>', methods=['GET'])
 def getEventPage(page) :
 	try :
-		events = eventService.getPage(page=page, args=request.args)
+		events = eventService.getPage(page=page, **request.args)
 		return jsonify({'success':1, 'events': [i.dict() for i in events]})
 	except Exception as e:
 		print e
