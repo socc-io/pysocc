@@ -20,7 +20,7 @@ def getIssue(id) :
 
 def getPage(page, owner_id=None, **kwargs) :
     q = db.session.query(Study)
-    pageSize = args.get('pageSize') or DEFAULT_PAGE_SIZE
+    pageSize = kwargs.get('pageSize') or DEFAULT_PAGE_SIZE
     if owner_id != None :
         q = q.filter(Study.owner_id == int(owner_id))
     return q.limit(pageSize).offset(page*pageSize).all()
