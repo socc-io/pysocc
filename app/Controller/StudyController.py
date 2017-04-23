@@ -33,6 +33,7 @@ def getStudy(id) :
     except Exception as e:
         print e
         return jsonify({'success':0, 'msg':'failed to get study by id: {}'.format(id)})
+
 @studyCnt.route('/study/page/<int:page>', methods=['GET'])
 def getStudyPage(page) :
     try :
@@ -41,6 +42,7 @@ def getStudyPage(page) :
     except Exception as e:
         print e
         return jsonify({'success':0, 'msg': str(e)})
+        
 @studyCnt.route('/study/<int:id>', methods=['PUT'])
 @auto.doc('study')
 def putStudy(id) :
