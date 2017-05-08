@@ -9,6 +9,7 @@ class User(db.Model) :
 	__tablename__ = 'user'
 	id = db.Column(db.Integer, primary_key=True)
 	apikey = db.Column(db.String(64))
+	fcmToken = db.Column(db.String(256))
 	email = db.Column(db.String(256))
 	password = db.Column(db.String(65))
 	role = db.Column(db.String(32))
@@ -43,12 +44,13 @@ class User(db.Model) :
 		self.role = 'USER'
 		self.active = 1
 		self.apikey = random_generate_alphabet(64)
+		self.fcmToken = ''
 
 		self.created_date = datetime.datetime.now()
 		self.last_date    = datetime.datetime.now()
 
-	def dict(self) :
-		return {
+	def dict(self, join=False) :
+		base = {
 			'id'    : self.id,
 			'apikey': self.apikey,
 			'email' : self.email,
@@ -57,3 +59,9 @@ class User(db.Model) :
 			'last_date' : self.last_date,
 			'created_date' : self.created_date
 		}
+		if join:
+			joined = {
+				'attending_events': [i.dict() for i in self.attending_events]
+			}
+			base = dict(base, **joined)
+		return base

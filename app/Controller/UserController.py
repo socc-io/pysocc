@@ -48,6 +48,18 @@ def login() :
         userService.updateLastDate(user)
         return jsonify({'success':1, 'user':user.dict()})
 
+@userCnt.route('/fcm/token', methods=['POST'])
+def updateFCMToken():
+    if current_user.is_anonymous: return jsonify({'success':0})
+    err, data = data_get(('fcmToken',))
+    if err == False:
+        if data == None:
+            return jsonify({'success':0, 'msg': 'invalid request format'})
+        else:
+            return jsonify({'success':0, 'msg': '{} not found'.format(data)})
+    userService.updateFCMToken(current_user, data.get('fcmToken'))
+    return jsonify({'success': 1})
+
 @userCnt.route('/logout', methods=['POST'])
 @auto.doc('user')
 def logout() :

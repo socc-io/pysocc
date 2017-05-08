@@ -29,7 +29,7 @@ def getStudy(id) :
     try :
         study = studyService.get(id)
         if not study: raise Exception()
-        return jsonify({'success':1, 'study':study.dict(join=True)})
+        return jsonify({'success':1, 'study':study.dict(True)})
     except Exception as e:
         print e
         return jsonify({'success':0, 'msg':'failed to get study by id: {}'.format(id)})
@@ -105,7 +105,7 @@ def getPutDelete(id) :
         issue = studyService.getIssue(id)
         if not issue: raise Exception()
         if request.method == 'GET' :
-            return jsonify({'success':1, 'issue':issue.dict()})
+            return jsonify({'success':1, 'issue':issue.dict(True)})
 
         elif request.method == 'PUT':
             success, bodyJson = data_get()

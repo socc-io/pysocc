@@ -14,11 +14,14 @@ class Event(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	writer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 	study_id = db.Column(db.Integer, db.ForeignKey('study.id'))
+	place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
 	date = db.Column(db.DateTime)
 	content = db.Column(db.Text)
 
 	writer = db.relationship('User')
 	study = db.relationship('Study')
+	place = db.relationship('Place')
+	foods = db.relationship('Food', secondary='event_with_food')
 	attending_users = db.relationship('User', secondary=event_attendance)
 	def __init__(self, writer_id, date, content='', study_id=None):
 		self.writer_id = writer_id
@@ -31,12 +34,18 @@ class Event(db.Model):
 		base = {
 			'id': self.id,
 			'writer_id': self.writer_id,
+			'study_id': self.study_id,
+			'place_id': self.place_id,
 			'date': self.date,
 			'content': self.content
 		}
-		if join :
+		if join:
 			joined = {
-				'writer': writer.dict()
+				'writer': self.writer.dict(),
+				'place': self.place.dict(),
+				'study': self.study.dict(),
+				'foods': [i.dict() for i in self.foods],
+				'attending_users': [i.dict() for i in self.attending_users]
 			}
 			base = dict(base, **joined)
 		return base

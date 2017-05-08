@@ -36,3 +36,7 @@ def updateLastDate(user, **kwargs) :
 def delete(obj) :
 	db.session.delete(obj)
 	db.session.commit()
+
+def updateFCMToken(user, token):
+	user.fcmToken = token
+	db.session.commit()

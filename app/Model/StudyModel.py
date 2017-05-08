@@ -20,6 +20,7 @@ class Study(db.Model) :
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     description = db.Column(db.Text)
     name = db.Column(db.String(128))
+    active = db.Column(db.Integer)
     
     created_date = db.Column(db.DateTime)
 
@@ -29,12 +30,13 @@ class Study(db.Model) :
     events = db.relationship('Event', lazy='dynamic')
     owner = db.relationship('User')
 
-    def __init__(self, owner_id, name, description='', id=None, created_date=None) :
+    def __init__(self, owner_id, name, description='', id=None, created_date=None, active=1) :
         self.owner_id = owner_id
         self.name = name
         self.description = description
         self.created_date = created_date or datetime.now()
         self.id = id
+        self.active = active
 
     def __repr__(self) :
         return '<Study {}, id: {}, description: {}>'.format(self.name, self.id, self.description)

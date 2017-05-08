@@ -107,7 +107,7 @@ def getPutDeleteEventComment(comment_id) :
 		if not comment: raise Exception()
 
 		if request.method == 'GET':
-			return jsonify({'success':1, 'comment':comment.dict()})
+			return jsonify({'success':1, 'comment':comment.dict(True)})
 
 		elif request.method == 'PUT':
 			if comment.writer_id != current_user.id: raise Exception()

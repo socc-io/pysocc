@@ -40,6 +40,12 @@ def create(**args) :
 	db.session.commit()
 	return obj
 
+def createComment(**args):
+	obj = EventComment(**args)
+	db.session.add(obj)
+	db.session.commit()
+	return obj
+
 def delete(obj) :
 	db.session.delete(obj)
 	db.session.commit()
