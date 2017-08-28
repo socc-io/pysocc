@@ -7,9 +7,8 @@ except Exception as E: pass
 
 from flask import Flask, jsonify, request, url_for
 from flask_login import current_user
-from app.secret import *
 from flask_sqlalchemy import SQLAlchemy
-from flask_autodoc.autodoc import Autodoc
+from flask_autodoc import Autodoc
 
 import json
 
