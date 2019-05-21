@@ -1,8 +1,0 @@
-SQLAlchemy
-flask
-flask_admin
-flask_login
-flask_sqlalchemy
-pymysql
-pytest
-sqlalchemy_utils
